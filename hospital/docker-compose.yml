@@ -1,0 +1,28 @@
+version: '3'
+services:
+  webapp:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=doctor
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=wwk426096
+
+  db:
+    image: mysql:8.0.11
+    environment:
+      - MYSQL_ROOT_PASSWORD=wwk426096
+      - MYSQL_DATABASE=doctor
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    
+
+volumes:
+  db-data:

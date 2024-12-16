@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.oracle.mapper.ConsultationMapper">
+
+        <resultMap id="consultationResultMap" type="com.oracle.pojo.Consultation">
+            <id property="consultationId" column="consultation_id"/>
+            <result property="patientId" column="patient_id"/>
+            <result property="doctorId" column="doctor_id"/>
+            <result property="consultationTime" column="consultation_time"/>
+            <result property="isHospitalRegistered" column="is_hospital_registered"/>
+            <result property="isHospitalized" column="is_hospitalized"/>
+            <result property="medicalAdviceCase" column="medical_advice_case"/>
+
+        </resultMap>
+
+        <!-- 根据就诊编号获取就诊记录 -->
+        <select id="getConsultationById" resultMap="consultationResultMap">
+            SELECT * FROM consultation WHERE consultation_id = #{consultationId}
+        </select>
+
+        <!-- 根据患者编号获取该患者的所有就诊记录 -->
+        <select id="getConsultationsByPatientId" resultMap="consultationResultMap">
+            SELECT * FROM consultation WHERE patient_id = #{patientId}
+        </select>
+
+        <!-- 插入新的就诊记录 -->
+        <insert id="insertConsultation">
+            INSERT INTO consultation (consultation_id,patient_id, doctor_id, consultation_time, is_hospital_registered, is_hospitalized, medical_advice_case)
+            VALUES (#{consultationId},#{patientId}, #{doctorId}, #{consultationTime}, #{isHospitalRegistered}, #{isHospitalized}, #{medicalAdviceCase})
+        </insert>
+
+        <!-- 删除新的就诊记录 -->
+        <delete id="deleteConsultation">
+            DELETE FROM consultation WHERE consultation_id = #{consultationId}
+        </delete>
+
+        <select id="selectConsultationAll" resultMap="consultationResultMap">
+            SELECT * FROM consultation
+            ORDER BY consultation_id ASC;
+        </select>
+
+        <select id="selectMaxConsultationId" resultType="java.lang.String">
+            select max(consultation_id) from consultation
+        </select>
+
+        <!--
+        <select id="selectConsultationSearch" resultType="com.oracle.pojo.Consultation">
+            select
+            d.consultation_id as consultationId,
+            d.patient_id as patientId,
+            d.doctor_id as doctorId,
+            d.consultation_time as consultationTime,
+            d.is_hospital_registered as isHospitalRegistered,
+            d.is_hospitalized as isHospitalized,
+            d.medical_advice_case as medicalAdviceCase,
+            dept.department_name as departmentName,
+            p.name as doctorName
+            from consultation d left join departments dept on(dept.department_id=d.department_id)
+            left join doctors p on(d.doctor_id =p.doctor_id)
+            <where>
+                <if test="did !=null">
+                    and department_id=#{did}
+                </if>
+                <if test="pid !=null">
+                    and doctor_id=#{pid}
+                </if>
+            </where>
+        </select>
+        -->
+
+</mapper>

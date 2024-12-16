@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.oracle.mapper.BookAppointmentMapper">
+
+    <resultMap id="bookAppointmentMap" type="com.oracle.pojo.BookAppointment">
+        <id column="appointment_date" property="appointmentDate"/>
+        <result column="appointment_date" property="appointmentDate" />
+        <result column="bookNumber" property="bookNumber"/>
+
+    </resultMap>
+    <insert id="insertBookAppointment">
+        insert into appointmentbooknumber values (#{appointmentDate},#{bookNumber})
+    </insert>
+
+    <update id="updateBookAppointment">
+        update appointmentbooknumber set bookNumber=bookNumber-1 where appointment_date=#{appointmentDate}
+    </update>
+    <update id="updateBookAppointmentAdd">
+        update appointmentbooknumber set bookNumber=bookNumber+1 where appointment_date=#{appointmentDate}
+    </update>
+
+    <select id="selectAll" resultMap="bookAppointmentMap">
+        select * from appointmentbooknumber
+    </select>
+
+    <select id="isExistAppointmentDate" resultType="java.lang.Boolean">
+        SELECT COUNT(1) FROM appointmentbooknumber WHERE appointment_date = #{appointmentDate};
+    </select>
+    <select id="selectBookAppointmentByDate" resultMap="bookAppointmentMap">
+        SELECT * FROM appointmentbooknumber WHERE appointment_date = #{appointmentDate};
+    </select>
+
+</mapper>
